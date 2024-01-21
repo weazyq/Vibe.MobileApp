@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "AwesomeProject",
+    "description": "app desc",
     "slug": "AwesomeProject",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,6 +19,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "test.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -25,6 +27,26 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "42e06094-214d-48eb-bae8-1b3541368c59"
+      }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Inter-Black.otf",
+            "./assets/fonts/Inter-Bold.otf",
+            "./assets/fonts/Inter-SemiBold.otf",
+            "./assets/fonts/Inter-Medium.otf",
+            "./assets/fonts/Inter-Regular.otf",
+            "./assets/fonts/Inter-Light.otf"
+          ]
+        }
+      ]
+    ]
   }
 }

@@ -45,7 +45,7 @@ function GetDataPage() {
                         <Input
                             type="phone"
                             label="Твой номер телефона?"
-                            regex={new RegExp("^\\+7\d{10}$")}
+                            regex={/^\+7\d{10}$/}
                             validateMessage="Укажите телефон в формате +7 000 000 00 00"
                             onSmsSend={sendSms}
                             value={clientBlank.phone}

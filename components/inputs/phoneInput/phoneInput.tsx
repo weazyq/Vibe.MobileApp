@@ -16,11 +16,11 @@ function PhoneInput(props: IProps) {
     const [hasErrors, setHasErrors] = useState<boolean>(false)
 
     function validate(text: string) {
-        alert(props.regex)
         const isValid = props.regex.test(text)
         if (!isValid) {
             setValidateMessage(props.validateMessage)
             setHasErrors(true)
+            return;
         }
 
         setHasErrors(false)

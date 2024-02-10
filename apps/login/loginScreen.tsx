@@ -1,29 +1,27 @@
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { LoginPageType, useLoginPage } from './LoginContext';
+import CheckSmsPage from './pages/checkSmsPage';
 import GetDataPage from './pages/getDataPage';
 import Hello from './pages/hello';
 
-
 function LoginScreen() {
-    const { pageType } = useLoginPage()
+    const { pageType, clientBlank } = useLoginPage()
 
     const styles = StyleSheet.create({
         container: {
             width: "100%",
             height: "100%",
-            display: "flex",
-            flexDirection: "column",
             paddingHorizontal: 20,
             paddingVertical: 20
         }
     })
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {
                 renderPage(pageType)
             }
-        </View>
+        </SafeAreaView>
     )
 
     function renderPage(pageType: LoginPageType) {
@@ -32,6 +30,8 @@ function LoginScreen() {
                 return <Hello />
             case LoginPageType.GetData:
                 return <GetDataPage />
+            case LoginPageType.PhoneConfirmPage:
+                return <CheckSmsPage />
         }
     }
 }

@@ -1,76 +1,63 @@
 import { useState } from "react"
-import { Alert, SafeAreaView, StyleSheet, View } from "react-native"
-import { useAuth } from "../../../AuthProvider"
+import { StyleSheet, View } from "react-native"
 import Button from "../../../components/buttons/button"
 import Input from "../../../components/inputs/input"
-import { ClientBlank } from "../../../domain/clients/clientBlank"
-import { ClientProvider } from "../../../domain/clients/clientProvider"
+import { containerStyles } from "../../../styles/styles"
+import { LoginPageType, useLoginPage } from "../LoginContext"
 
 function GetDataPage() {
-    const { setIsAuthenticated } = useAuth()
-    const [clientBlank, setClientBlank] = useState<ClientBlank>(ClientBlank.getDefaultBlank())
+    const { clientBlank, changePage, setClientBlank } = useLoginPage()
+
+    const [isPhoneNumberValid, setIsPhoneNumberValid] = useState<boolean>(false)
 
     function handleChangeName(name: string) {
         setClientBlank((prevState) => ({ ...prevState, name }))
     }
 
-    function handleChangePhone(phone: string) {
+    function handleChangePhone(phone: string, isValid: boolean) {
         setClientBlank((prevState) => ({ ...prevState, phone }))
+        setIsPhoneNumberValid(isValid)
     }
 
     const styles = StyleSheet.create({
         container: {
-            display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
-            height: '100%'
+            height: '100%',
+            ...containerStyles.flexSpaceBetween
         }
     })
 
-    const isDataEntered = clientBlank.name == null || clientBlank.phone == null
+
+    const isDataNotEntered = clientBlank.name == null || clientBlank.phone == null || !isPhoneNumberValid
 
     return (
         <>
-            <SafeAreaView>
-                <View style={styles.container}>
-                    <View>
-                        <View style={{ marginBottom: 10 }}>
-                            <Input
-                                type="text"
-                                label="Как тебя зовут?"
-                                value={clientBlank.name}
-                                onChange={handleChangeName}
-                            />
-                        </View>
+            <View style={styles.container}>
+                <View style={{ marginTop: 50 }}>
+                    <View style={{ marginBottom: 35 }}>
                         <Input
-                            type="phone"
-                            label="Твой номер телефона?"
-                            regex={/^\+7\d{10}$/}
-                            validateMessage="Укажите телефон в формате +7 000 000 00 00"
-                            onSmsSend={sendSms}
-                            value={clientBlank.phone}
-                            onChange={handleChangePhone}
+                            type="text"
+                            label="Как тебя зовут?"
+                            value={clientBlank.name}
+                            onChange={handleChangeName}
                         />
                     </View>
-
-                    <Button disabled={isDataEntered} onClick={async () => registerClient(clientBlank)}>Продолжить</Button>
+                    <Input
+                        type="phone"
+                        label="Твой номер телефона?"
+                        value={clientBlank.phone}
+                        onChange={handleChangePhone}
+                    />
                 </View>
-            </SafeAreaView>
+
+                <Button
+                    label="Продолжить"
+                    size="large"
+                    disabled={isDataNotEntered}
+                    onClick={() => changePage(LoginPageType.PhoneConfirmPage)} />
+            </View>
         </>
     )
-
-    async function sendSms(phoneNumber: string) {
-        const response = await ClientProvider.sendSms(phoneNumber)
-    }
-
-    async function registerClient(blank: ClientBlank) {
-        const response = await ClientProvider.registerClient(blank)
-        showAlert(response)
-    }
-
-    function showAlert(response: any) {
-        Alert.alert(JSON.stringify(response))
-    }
 }
 
 export default GetDataPage

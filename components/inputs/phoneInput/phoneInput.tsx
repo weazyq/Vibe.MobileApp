@@ -1,30 +1,35 @@
 import { useState } from "react"
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+import { StyleSheet, Text, TextInput, View } from "react-native"
+import { inputStyles } from "../../../styles/styles"
 
 interface IProps {
     label?: string
-    onChange: (value) => void
-    onSend: (value) => void
-    regex?: RegExp
-    validateMessage?: string
+    onChange: (value: string, isValid: boolean) => void
     hasErrors?: boolean
 }
 
 function PhoneInput(props: IProps) {
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string | null>('')
     const [validateMessage, setValidateMessage] = useState<string | null>(null)
-    const [hasErrors, setHasErrors] = useState<boolean>(false)
+
+    const phoneRegex = /^\+7\d{10}$/
 
     function validate(text: string) {
-        const isValid = props.regex.test(text)
+        const isValid = phoneRegex.test(text)
+
         if (!isValid) {
-            setValidateMessage(props.validateMessage)
-            setHasErrors(true)
+            setValidateMessage('Введите номер телефона в формате +7 000 000-00-00')
+            props.onChange(text, isValid)
             return;
         }
 
-        setHasErrors(false)
         setValidateMessage(null)
+        props.onChange(text, isValid)
+    }
+
+    function handleTextChange(text: string) {
+        setValue(text)
+        validate(text)
     }
 
     const styles = StyleSheet.create({
@@ -33,42 +38,37 @@ function PhoneInput(props: IProps) {
             display: "flex",
             flexDirection: "row",
             gap: 10,
+            justifyContent: 'space-between',
             alignItems: "center",
             padding: 10,
             borderRadius: 10,
             borderWidth: 1,
             borderColor: "#767676"
         },
-        input: {
-            width: "70%"
-        },
-        button: {
-            width: "30%",
-            backgroundColor: "rgb(0 0 0 / .1)"
-        }
     })
-
-    function handleTextChange(text: string) {
-        setValue(text)
-    }
 
     return (
         <View>
+            {props.label &&
+                <Text style={inputStyles.inputTitle}>
+                    {props.label}
+                </Text>
+            }
+
             <View style={styles.inputContainer}>
                 <TextInput
-                    style={styles.input}
-                    keyboardType={'phone-pad'}
+                    style={{
+                        flex: 1,
+                        fontSize: 16
+                    }}
+                    maxLength={12}
+                    inputMode={'tel'}
+                    value={value}
                     onChangeText={handleTextChange}
-                    onEndEditing={() => validate(value)}
                 />
-                <Pressable
-                    style={styles.button}
-                    disabled={hasErrors}
-                    onPress={props.onSend}>
-                    <Text>Получить СМС</Text>
-                </Pressable>
             </View>
-            {validateMessage != null &&
+
+            {validateMessage &&
                 <Text>{validateMessage}</Text>
             }
         </View>

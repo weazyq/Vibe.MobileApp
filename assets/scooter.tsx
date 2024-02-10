@@ -1,6 +1,6 @@
 import * as React from "react"
 import Svg, { Path, SvgProps } from "react-native-svg"
-const Scooter = (props: SvgProps) => (
+const ScooterIcon = (props: SvgProps) => (
     <Svg
         xmlns="http://www.w3.org/2000/svg"
         width={200}
@@ -78,4 +78,4 @@ const Scooter = (props: SvgProps) => (
         />
     </Svg>
 )
-export default Scooter
+export default ScooterIcon

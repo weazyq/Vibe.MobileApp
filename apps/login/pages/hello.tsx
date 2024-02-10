@@ -1,6 +1,7 @@
 import { Text, View } from 'react-native';
-import Scooter from '../../../assets/scooter';
+import ScooterIcon from '../../../assets/scooter';
 import Button from '../../../components/buttons/button';
+import { textStyles } from '../../../styles/styles';
 import { LoginPageType, useLoginPage } from '../LoginContext';
 
 function Hello() {
@@ -13,22 +14,29 @@ function Hello() {
     return (
         <>
             <View style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: 5,
-                marginHorizontal: "auto",
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 flex: 1,
             }}>
-                <Scooter />
+                <ScooterIcon />
             </View>
 
             <Text style={{
                 fontWeight: "bold",
                 fontFamily: "Inter-Bold",
-                fontSize: 14,
                 marginBottom: 10
-            }}>Привет, поехали ловить <Text>Vibe</Text> вместе!</Text>
-            <Button children={"Поехали"} onClick={handleButtonClick} />
+            }}>Привет, поехали ловить <Text style={textStyles.primaryText}>Vibe</Text> вместе!</Text>
+
+            <Button
+                label={"Поехали"}
+                size="large"
+                sx={{ marginBottom: 15 }}
+                onClick={handleButtonClick} />
+
+            <Text style={{ ...textStyles.secondaryText, ...textStyles.textCenter }}>
+                Нажимая «Поехали», Вы принимаете договор присоединения и политику конфиденциальности
+            </Text>
         </>
     )
 }

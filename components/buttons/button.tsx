@@ -1,37 +1,54 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Colors } from '../../styles/styles';
 
 interface ButtonProps {
+    sx?: StyleProp<ViewStyle>
+    size?: 'small' | 'medium' | 'large'
     disabled?: boolean
-    children?: React.ReactNode
+    label?: string
     onClick?: () => void
 }
 
 function Button(props: ButtonProps) {
+    let padding = 0
+    let fontSize = 10
+    switch (props.size) {
+        case 'small':
+            padding = 5
+            fontSize = 10
+            break;
+        case 'medium':
+            padding = 10
+            fontSize = 14
+            break;
+        case 'large':
+            padding = 15
+            fontSize = 18
+            break;
+    }
+
     const styles = StyleSheet.create({
         container: {
-            width: "100%",
-            paddingHorizontal: 20,
-            paddingVertical: 15,
+            padding: padding,
             backgroundColor: props.disabled
-                ? "#BCBCBC"
-                : "#299CDD",
+                ? Colors.disabled
+                : Colors.primary.light,
             borderWidth: 0,
             borderRadius: 10,
         },
         text: {
             textAlign: "center",
-            fontSize: 14,
+            fontSize: fontSize,
             fontFamily: "Inter-Regular",
             color: props.disabled
-                ? "#A1A1A1"
-                : "#fff"
-            ,
+                ? Colors.disabledText
+                : Colors.primary.contrastText
         }
     })
 
     return (
-        <Pressable style={styles.container} onPress={props.onClick}>
-            <Text style={styles.text}>{props.children}</Text>
+        <Pressable style={[props.sx, { ...styles.container }]} onPress={props.onClick}>
+            <Text style={styles.text}>{props.label}</Text>
         </Pressable>
     )
 }

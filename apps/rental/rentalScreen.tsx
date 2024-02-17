@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { MapMarker } from "react-native-maps";
-import AppBar from "../../components/appBar/appBar";
+import AppBar from "./components/appBar/appBar";
 import RentalHelp from "./pages/rentalHelp";
 import RentalProfile from "./pages/rentalProfile";
 import { useRentalContext } from "./rentalContext";

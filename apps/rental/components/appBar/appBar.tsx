@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { RentalTabType } from "../../apps/rental/types/RentalTab"
-import { Colors, textStyles } from "../../styles/styles"
+import { Colors, textStyles } from "../../../../styles/styles"
+import { RentalTabType } from "../../types/RentalTab"
 
 interface IProps {
     activeTab: RentalTabType

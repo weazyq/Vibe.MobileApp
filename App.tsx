@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
+import { useContext } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import AuthProvider, { useAuth } from './AuthProvider';
+import AuthProvider, { AuthContext } from './AuthProvider';
 import LoginProvider from './apps/login/LoginContext';
 import LoginScreen from './apps/login/loginScreen';
 import RentalProvider from './apps/rental/rentalContext';
@@ -14,31 +14,28 @@ export default function App() {
   );
 
   function AppContent() {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated } = useContext(AuthContext)
 
     const styles = StyleSheet.create({
       container: {
         width: "100%",
         height: "100%",
-        paddingTop: 50
+        padding: 20
       }
     })
 
     return (
-      <>
-        <StatusBar backgroundColor='#fff' />
-        <SafeAreaView style={styles.container}>
-          {
-            isAuthenticated
-              ? <RentalProvider>
-                <RentalScreen />
-              </RentalProvider>
-              : <LoginProvider>
-                <LoginScreen />
-              </LoginProvider>
-          }
-        </SafeAreaView >
-      </>
+      <SafeAreaView style={styles.container}>
+        {
+          isAuthenticated
+            ? <RentalProvider>
+              <RentalScreen />
+            </RentalProvider>
+            : <LoginProvider>
+              <LoginScreen />
+            </LoginProvider>
+        }
+      </SafeAreaView >
     )
   }
 }

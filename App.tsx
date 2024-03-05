@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import AuthProvider, { AuthContext } from './AuthProvider';
 import LoginProvider from './apps/login/LoginContext';
@@ -14,7 +14,11 @@ export default function App() {
   );
 
   function AppContent() {
-    const { isAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, checkAuthorize } = useContext(AuthContext)
+
+    useEffect(() => {
+      checkAuthorize()
+    }, [])
 
     const styles = StyleSheet.create({
       container: {

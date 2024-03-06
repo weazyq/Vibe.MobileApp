@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { LoginPageType, useLoginPage } from './LoginContext';
 import CheckSmsPage from './pages/checkSmsPage';
 import GetDataPage from './pages/getDataPage';
@@ -7,7 +8,11 @@ function LoginScreen() {
     const { pageType } = useLoginPage()
 
     return (
-        renderPage(pageType)
+        <View style={{padding: 20}}>
+            {
+                renderPage(pageType)
+            }
+        </View>
     )
 
     function renderPage(pageType: LoginPageType) {

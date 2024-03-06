@@ -8,7 +8,7 @@ function RentalProfile() {
     const { client } = useRentalContext()
 
     return (
-        <View style={[containerStyles.fullHeight, containerStyles.fullWidth, { paddingHorizontal: 20 }]}>
+        <View style={[containerStyles.fullHeight, containerStyles.fullWidth, { paddingHorizontal: 20, paddingTop: 50 }]}>
             <Typography
                 variant="h2"
                 text="Профиль"

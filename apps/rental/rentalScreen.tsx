@@ -5,9 +5,23 @@ import RentalHelp from "./pages/rentalHelp";
 import RentalProfile from "./pages/rentalProfile";
 import { useRentalContext } from "./rentalContext";
 import { RentalTabType } from "./types/RentalTab";
+import { useAuthContext } from "../../AuthProvider";
+import { ClientProvider } from "../../domain/clients/clientProvider";
+import { useEffect } from "react";
 
 function RentalScreen() {
-    const { activeTab, changeActiveTab } = useRentalContext()
+    const { activeTab, changeActiveTab, onClientLoaded } = useRentalContext()
+
+    const { userId } = useAuthContext()
+
+    useEffect(() => {
+        loadClient()
+    }, [])
+
+    async function loadClient(){
+        const client = await ClientProvider.getClient(userId)
+        onClientLoaded(client)
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -16,13 +30,6 @@ function RentalScreen() {
             width: '100%'
         }
     })
-
-    const scooters = [
-        { longitude: 55.1, latitude: 38.8 },
-        { longitude: 53.1, latitude: 37.8 },
-        { longitude: 54.1, latitude: 38.8 },
-        { longitude: 52.1, latitude: 37.8 },
-    ]
 
     return (
         <View style={styles.container}>

@@ -3,7 +3,7 @@ import Constants from "../../constants/constants";
 import Result from "../../tools/result";
 import { ClientBlank } from "./clientBlank";
 import { LoginResultDTO } from "../infrastructure/loginResultDTO";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Client, mapToClient } from "./client";
 
 export class ClientProvider {
     static async sendSms(phoneNumber: string): Promise<Result> {
@@ -30,5 +30,16 @@ export class ClientProvider {
         }
 
         return Result.success(registerResult)
+    }
+
+    static async getClient(userId: string): Promise<Client> {
+        const response = await axios.get(`${Constants.serverUrl}/GetClient`, { 
+            params: {
+                userId
+            },
+            ...Constants.axiosConfig
+        })
+
+        return mapToClient(response.data.value)
     }
 }

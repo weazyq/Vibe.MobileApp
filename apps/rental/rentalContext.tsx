@@ -3,26 +3,28 @@ import { Client } from "../../domain/clients/client"
 import { RentalTabType } from "./types/RentalTab"
 
 interface RentalContextProps {
-    client: Client,
     activeTab: RentalTabType
+    client: Client,
     changeActiveTab: (tab: RentalTabType) => void
+    onClientLoaded: (client: Client) => void
 }
 
-const defaultClient = new Client('Владислав', '+79779221861')
-
 const RentalContext = React.createContext<RentalContextProps>({
-    client: defaultClient,
+    client: null,
     activeTab: RentalTabType.Ride,
-    changeActiveTab: (tab: RentalTabType) => { }
+    changeActiveTab: (tab: RentalTabType) => { },
+    onClientLoaded: (client: Client) => { },
 })
 
 function RentalProvider({ children }) {
     const [activeTab, setActiveTab] = useState<RentalTabType>(RentalTabType.Ride)
+    const [client, setClient] = useState<Client | null>(null)
 
     return (<RentalContext.Provider value={{
         activeTab,
+        client,
         changeActiveTab: (tab) => setActiveTab(tab),
-        client: defaultClient
+        onClientLoaded: (client) => setClient(client)
     }}>
         {children}
     </RentalContext.Provider>)

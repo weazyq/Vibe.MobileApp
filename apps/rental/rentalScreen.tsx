@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import MapView, { MapMarker } from "react-native-maps";
+import { Platform, StyleSheet, View } from "react-native";
+import MapView, { Camera, MapMarker, MarkerPressEvent, Region } from "react-native-maps";
 import AppBar from "./components/appBar/appBar";
 import RentalHelp from "./pages/rentalHelp";
 import RentalProfile from "./pages/rentalProfile";
@@ -7,15 +7,19 @@ import { useRentalContext } from "./rentalContext";
 import { RentalTabType } from "./types/RentalTab";
 import { useAuthContext } from "../../AuthProvider";
 import { ClientProvider } from "../../domain/clients/clientProvider";
-import { useEffect } from "react";
+import { LegacyRef, useEffect, useRef } from "react";
+import { ScooterProvider } from "../../domain/scooters/scooterProvider";
+import ScooterMarker from "./components/scooterMarker";
 
 function RentalScreen() {
-    const { activeTab, changeActiveTab, onClientLoaded } = useRentalContext()
+    const { activeTab, scooters, changeActiveTab, onClientLoaded, onScootersLoaded } = useRentalContext()
 
     const { userId } = useAuthContext()
+    const map: LegacyRef<MapView> = useRef(null)
 
     useEffect(() => {
         loadClient()
+        loadScooters()
     }, [])
 
     async function loadClient(){
@@ -23,6 +27,23 @@ function RentalScreen() {
         onClientLoaded(client)
     }
 
+    async function loadScooters() {
+        const scooters = await ScooterProvider.getScooters()
+        onScootersLoaded(scooters)
+    }
+
+    const handleZoomIn = (latitude: number, longitude: number) => {
+        const delay: number = 500
+        const newRegion: Region = {
+            latitude,
+            longitude,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0
+        }
+
+        map.current.animateToRegion(newRegion, delay)
+    };
+    
     const styles = StyleSheet.create({
         container: {
             display: 'flex',
@@ -36,6 +57,7 @@ function RentalScreen() {
             <View style={{ flex: 1 }}>
                 {renderRentalContent(activeTab)}
                 <MapView
+                    ref={map}
                     style={{
                         flex: 1
                     }}
@@ -44,14 +66,11 @@ function RentalScreen() {
                         longitude: 38.8,
                         latitudeDelta: 0.1,
                         longitudeDelta: 0
-                    }}>
-                    <MapMarker coordinate={{
-                        latitude: 55.1, longitude: 38.8
-                    }}>
-                        <View>
-                            <Text>Кастом мэточка</Text>
-                        </View>
-                    </MapMarker>
+                    }}
+                    >
+                    {scooters.map(scooter => 
+                        <ScooterMarker key={scooter.id} scooter={scooter} onPress={() => handleZoomIn(scooter.latitude, scooter.longitude)}/>
+                    )}
                 </MapView>
                 <AppBar
                     activeTab={activeTab}

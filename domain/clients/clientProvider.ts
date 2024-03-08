@@ -40,6 +40,6 @@ export class ClientProvider {
             ...Constants.axiosConfig
         })
 
-        return mapToClient(response.data.value)
+        return mapToClient(response.data)
     }
 }

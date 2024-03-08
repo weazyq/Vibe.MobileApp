@@ -8,7 +8,7 @@ function LoginScreen() {
     const { pageType } = useLoginPage()
 
     return (
-        <View style={{padding: 20}}>
+        <View style={{padding: 20, width: '100%', height: '100%'}}>
             {
                 renderPage(pageType)
             }

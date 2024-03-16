@@ -71,7 +71,7 @@ function Typography({ variant, align, text, style, gutterBottom }: TypographyPro
                 }
             case 'smallFont':
                 return {
-                    fontSize: 6,
+                    fontSize: 12,
                     fontWeight: '300'
                 }
             default:

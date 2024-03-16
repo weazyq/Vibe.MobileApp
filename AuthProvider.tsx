@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { createContext, useContext, useState } from "react"
-import { AuthUserProvider } from "./domain/infrastructure/authProvider"
+import { AuthUserProvider } from "./domain/infrastructure/authUserProvider"
 
 interface AuthContext {
     isAuthenticated: boolean,
@@ -40,7 +40,10 @@ function AuthProvider({ children }) {
         if(refreshToken == null) return changeContext({isAuthenticated: false })
 
         const response = await AuthUserProvider.refreshToken(refreshToken)
-        if(!response.isSuccess) return changeContext({isAuthenticated: false })
+        if(!response.isSuccess) {
+            changeContext({isAuthenticated: false })
+            return await AsyncStorage.removeItem('refreshToken')
+        }
 
         authrorize(response.data.userId, response.data.token, response.data.refreshToken)
     }

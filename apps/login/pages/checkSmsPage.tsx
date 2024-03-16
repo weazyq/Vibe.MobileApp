@@ -11,19 +11,19 @@ function CheckSmsPage() {
     const { onAuthorize } = useContext(AuthContext)
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
-    const phoneCodePattern: RegExp = /^\d{4}$/
+    const phoneCodeLength = 4
+    const codePatternRegex: RegExp = new RegExp(`^\\d{${phoneCodeLength}}$`)
 
     useEffect(() => {
         sendSms()
     }, [])
 
     async function sendSms() {
-        const response = await ClientProvider.sendSms(clientBlank.phone)
-        if (response.isSuccess) Alert.alert('Отправлен код')
+        await ClientProvider.sendSms(clientBlank.phone)
     }
 
     async function handlePhoneCodeChanged(phoneCode: string) {
-        if (!phoneCodePattern.test(phoneCode)) return
+        if (!codePatternRegex.test(phoneCode)) return
 
         const response = await ClientProvider.checkSms(clientBlank, phoneCode)
         if (!response.isSuccess) return setErrorMessage(response.errors[0])
@@ -43,6 +43,7 @@ function CheckSmsPage() {
                 {clientBlank.phone}
             </Text>
             <PhoneCodeInput
+                length={phoneCodeLength}
                 onChange={handlePhoneCodeChanged}
             />
             {errorMessage &&

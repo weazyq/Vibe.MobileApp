@@ -18,6 +18,8 @@ export class Colors {
     static inputBorder = '#767676'
     static disabled = '#BCBCBC'
     static disabledText = '#A1A1A1'
+    static error = '#BD5050'
+    static warning = '#B67A42'
 }
 
 export const textStyles = StyleSheet.create({
@@ -56,14 +58,23 @@ export const textStyles = StyleSheet.create({
 })
 
 export const containerStyles = StyleSheet.create({
+    spaceBetween: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: "space-between"
+    },
+    flex: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
     flexCenter: {
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
     },
-    flexSpaceBetween: {
-        display: "flex",
-        justifyContent: "space-between",
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column'
     },
     fullHeight: {
         height: '100%'

@@ -3,6 +3,7 @@ import { Colors } from '../../styles/styles';
 
 interface ButtonProps {
     sx?: StyleProp<ViewStyle>
+    variant?: 'contained' | 'elevated'
     size?: 'small' | 'medium' | 'large'
     disabled?: boolean
     label?: string
@@ -30,28 +31,64 @@ function Button(props: ButtonProps) {
     const styles = StyleSheet.create({
         container: {
             padding: padding,
-            backgroundColor: props.disabled
-                ? Colors.disabled
-                : Colors.primary.light,
-            borderWidth: 0,
             borderRadius: 10,
         },
         text: {
             textAlign: "center",
             fontSize: fontSize,
-            fontFamily: "Inter-Regular",
-            color: props.disabled
-                ? Colors.disabledText
-                : Colors.primary.contrastText
+            fontFamily: "Inter-Regular"
         }
     })
 
+    let containerStylesByVariant;
+    let textStylesByVariant;
+
+    switch (props.variant) {
+        case 'contained':
+            containerStylesByVariant = {
+                backgroundColor: props.disabled
+                    ? Colors.disabled
+                    : Colors.primary.light,
+            };
+            textStylesByVariant = {
+                color: props.disabled 
+                ? Colors.disabledText
+                : Colors.primary.contrastText
+            }
+            break; 
+        case 'elevated':
+            containerStylesByVariant = {
+                backgroundColor: '#fff',
+                borderColor: props.disabled
+                    ? Colors.disabled
+                    : Colors.primary.light,
+                borderWidth: 3,
+            };
+            textStylesByVariant = {
+                color: props.disabled 
+                    ? Colors.disabledText
+                    : Colors.primary.light
+            };
+            break;
+        default:
+            containerStylesByVariant = {
+                backgroundColor: props.disabled
+                    ? Colors.disabled
+                    : Colors.primary.light,
+            };
+            textStylesByVariant = {
+                color: props.disabled 
+                ? Colors.disabledText
+                : Colors.primary.contrastText
+            }
+            break;
+    }
+
     return (
-        <Pressable style={[props.sx, { ...styles.container }]} onPress={props.onClick}>
-            <Text style={styles.text}>{props.label}</Text>
+        <Pressable style={[props.sx, styles.container, containerStylesByVariant]} onPress={props.onClick}>
+            <Text style={[styles.text, textStylesByVariant]}>{props.label}</Text>
         </Pressable>
     )
 }
-
 
 export default Button

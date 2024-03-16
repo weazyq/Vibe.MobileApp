@@ -3,6 +3,7 @@ import ScooterIcon from '../../../assets/scooter';
 import Button from '../../../components/buttons/button';
 import { textStyles } from '../../../styles/styles';
 import { LoginPageType, useLoginPage } from '../LoginContext';
+import Typography from '../../../components/typography/typography';
 
 function Hello() {
     const { changePage } = useLoginPage()
@@ -29,14 +30,20 @@ function Hello() {
             }}>Привет, поехали ловить <Text style={textStyles.primaryText}>Vibe</Text> вместе!</Text>
 
             <Button
-                label={"Поехали"}
+                label={"Регистрация"}
                 size="large"
                 sx={{ marginBottom: 15 }}
                 onClick={handleButtonClick} />
 
-            <Text style={{ ...textStyles.secondaryText, ...textStyles.textCenter }}>
-                Нажимая «Поехали», Вы принимаете договор присоединения и политику конфиденциальности
-            </Text>
+            <Button
+                label={"Я уже зарегестрирован"}
+                size="medium"
+                variant="elevated"
+            />
+
+            <Typography variant="smallFont" align="center" style={textStyles.secondaryText}
+                text="Нажимая «Регистрация», Вы принимаете договор присоединения и политику конфиденциальности"
+            />
         </>
     )
 }

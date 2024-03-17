@@ -1,19 +1,18 @@
 import { Text, View } from 'react-native';
-import ScooterIcon from '../../../assets/scooter';
-import Button from '../../../components/buttons/button';
-import { textStyles } from '../../../styles/styles';
-import { LoginPageType, useLoginPage } from '../LoginContext';
-import Typography from '../../../components/typography/typography';
+import ScooterIcon from '../../assets/scooter';
+import Button from '../../components/buttons/button';
+import { textStyles } from '../../styles/styles';
+import Typography from '../../components/typography/typography';
+import { router } from 'expo-router';
 
-function Hello() {
-    const { changePage } = useLoginPage()
+function LoginHome() {
 
     function handleButtonClick() {
-        changePage(LoginPageType.GetData)
+        router.push("/login/getDataPage")
     }
 
     return (
-        <>
+        <View style={{height: '100%', padding: 20}}>
             <View style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -25,7 +24,6 @@ function Hello() {
 
             <Text style={{
                 fontWeight: "bold",
-                fontFamily: "Inter-Bold",
                 marginBottom: 10
             }}>Привет, поехали ловить <Text style={textStyles.primaryText}>Vibe</Text> вместе!</Text>
 
@@ -44,8 +42,8 @@ function Hello() {
             <Typography variant="smallFont" align="center" style={textStyles.secondaryText}
                 text="Нажимая «Регистрация», Вы принимаете договор присоединения и политику конфиденциальности"
             />
-        </>
+        </View>
     )
 }
 
-export default Hello
+export default LoginHome

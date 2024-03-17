@@ -1,13 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { createContext, useContext, useState } from "react"
-import { AuthUserProvider } from "./domain/infrastructure/authUserProvider"
+import { AuthUserProvider } from "../domain/infrastructure/authUserProvider"
 
 interface AuthContext {
     isAuthenticated: boolean,
     token: string | null,
     userId: string | null,
     onAuthorize: (userId: string, token: string, refreshToken: string) => void
-    checkAuthorize: () => void
+    checkAuthorize: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContext | undefined>(undefined)
@@ -22,10 +22,10 @@ function AuthProvider({ children }) {
         checkAuthorize: checkAuthorize
     }
 
-    const [context, setContext] = useState<AuthContext>(defaultValue)
+    const [authContext, setAuthContext] = useState<AuthContext>(defaultValue)
 
     function changeContext(context: Partial<AuthContext>) {
-        setContext((prevContext) => ({ ...prevContext, ...context }))
+        setAuthContext((prevContext) => ({ ...prevContext, ...context }))
     }
 
     function authrorize(userId: string, token: string, refreshToken: string) {
@@ -49,7 +49,7 @@ function AuthProvider({ children }) {
     }
 
     return (
-        <AuthContext.Provider value={context}>
+        <AuthContext.Provider value={authContext}>
             {children}
         </AuthContext.Provider>
     )

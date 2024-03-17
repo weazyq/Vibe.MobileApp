@@ -4,6 +4,7 @@
     "description": "app desc",
     "slug": "AwesomeProject",
     "version": "1.0.0",
+    "scheme": "vibe-app-scheme",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

@@ -1,4 +1,4 @@
-import { Scooter } from "../../../domain/scooters/scooter"
+import { Scooter } from "../../domain/scooters/scooter"
 import { MapMarker, MarkerPressEvent } from "react-native-maps"
 
 interface ScooterMarkerProps {

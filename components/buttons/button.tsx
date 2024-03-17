@@ -36,7 +36,6 @@ function Button(props: ButtonProps) {
         text: {
             textAlign: "center",
             fontSize: fontSize,
-            fontFamily: "Inter-Regular"
         }
     })
 

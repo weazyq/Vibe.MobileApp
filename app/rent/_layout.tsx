@@ -1,11 +1,11 @@
 import { Tabs } from "expo-router"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Colors } from "../../styles/styles"
-import AuthProvider from "../../contexts/authContext"
+import RentalProvider from "../../contexts/rentalContext"
 
 function RentLayout() {
   return (
-    <AuthProvider>
+    <RentalProvider>
         <Tabs screenOptions={{headerShown: false, tabBarActiveTintColor: Colors.primary.light }}>
             <Tabs.Screen
                 name="help"
@@ -29,7 +29,7 @@ function RentLayout() {
                 }}
             />
         </Tabs>
-    </AuthProvider>
+    </RentalProvider>
   )
 }
 

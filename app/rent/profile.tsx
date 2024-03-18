@@ -9,17 +9,7 @@ import Divider from "../../components/dividers/divider"
 
 function Profile() {
 
-  const {client, onClientLoaded} = useRentalContext()
-  const { userId } = useAuthContext()
-  
-  useEffect(() => {
-    loadClient()
-  }, [])
-  
-  async function loadClient() {
-    const client = await ClientProvider.getClient(userId)
-    onClientLoaded(client)
-  }
+  const {client} = useRentalContext()
 
   return (
     <View style={[containerStyles.fullHeight, containerStyles.fullWidth, { paddingHorizontal: 20, paddingTop: 50 }]}>

@@ -44,14 +44,11 @@ function RentalScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={{ position: "relative" }}>
-        {selectedScooter && (
-          <ScooterInfoModal
+      {selectedScooter != null && <ScooterInfoModal
             scooter={selectedScooter}
             onClose={() => setSelectedScooter(null)}
           />
-        )}
-      </View>
+      }
       <MapView
         ref={map}
         style={{

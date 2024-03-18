@@ -4,8 +4,6 @@ import { AuthUserProvider } from "../domain/infrastructure/authUserProvider"
 
 interface AuthContext {
     isAuthenticated: boolean,
-    token: string | null,
-    userId: string | null,
     onAuthorize: (userId: string, token: string, refreshToken: string) => void
     checkAuthorize: () => Promise<void>
 }
@@ -16,8 +14,6 @@ function AuthProvider({ children }) {
     const defaultValue: AuthContext =
     {
         isAuthenticated: false,
-        token: null,
-        userId: null,
         onAuthorize: authrorize,
         checkAuthorize: checkAuthorize
     }
@@ -31,8 +27,9 @@ function AuthProvider({ children }) {
     function authrorize(userId: string, token: string, refreshToken: string) {
         AsyncStorage.setItem('refreshToken', refreshToken)
         AsyncStorage.setItem('token', token)
+        AsyncStorage.setItem('userId', userId)
         
-        changeContext({ token, userId, isAuthenticated: true })
+        changeContext({ isAuthenticated: true })
     }
 
     async function checkAuthorize(){

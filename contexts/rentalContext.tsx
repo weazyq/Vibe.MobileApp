@@ -1,22 +1,31 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Client } from "../domain/clients/client"
+import { ClientProvider } from "../domain/clients/clientProvider"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 interface RentalContextProps {
     client: Client,
-    onClientLoaded: (client: Client) => void
 }
 
 const RentalContext = React.createContext<RentalContextProps>({
     client: null,
-    onClientLoaded: () => { },
 })
 
 function RentalProvider({ children }) {
     const [client, setClient] = useState<Client | null>(null)
 
+    async function loadClientByUser(){
+        const userId = await AsyncStorage.getItem('userId')
+        const client = await ClientProvider.getClient(userId)
+        setClient(client)
+    }
+
+    useEffect(() => {
+        loadClientByUser()
+    }, [])
+
     return (<RentalContext.Provider value={{
         client,
-        onClientLoaded: (client) => setClient(client),
     }}>
         {children}
     </RentalContext.Provider>)

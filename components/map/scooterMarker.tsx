@@ -8,9 +8,9 @@ interface ScooterMarkerProps {
 
 function ScooterMarker({scooter, onPress}: ScooterMarkerProps) {
 
-    const scooterMark = require('../../../assets/scooter/ScooterMark.png')
-    const scooterMarkMedium = require('../../../assets/scooter/ScooterMarkMedium.png')
-    const scooterMarkLow = require('../../../assets/scooter/ScooterMarkLow.png')
+    const scooterMark = require('../../assets/scooter/ScooterMark.png')
+    const scooterMarkMedium = require('../../assets/scooter/ScooterMarkMedium.png')
+    const scooterMarkLow = require('../../assets/scooter/ScooterMarkLow.png')
 
     let markerImageByCharge = scooterMark
 

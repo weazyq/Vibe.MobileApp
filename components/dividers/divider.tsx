@@ -1,20 +1,21 @@
-import { View } from "react-native"
+import { StyleProp, View, ViewStyle } from "react-native"
 
 interface DividerProps {
     color?: string
-    width?: number
+    borderWidth?: number
+    sx?: StyleProp<ViewStyle>
 }
 
-function Divider({ color, width }: DividerProps) {
+function Divider({ color, borderWidth, sx }: DividerProps) {
     const colorStyle = color != null ? color : 'lightgray'
-    const widthStyle = width != null ? width : 1
+    const widthStyle = borderWidth != null ? borderWidth : 1
 
     return (
-        <View style={{
+        <View style={[{
             width: '100%',
             borderBottomColor: colorStyle,
-            borderBottomWidth: widthStyle
-        }} />
+            borderBottomWidth: widthStyle,
+        }, sx]} />
     )
 }
 

@@ -1,14 +1,17 @@
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { ScooterProvider } from "../../domain/scooters/scooterProvider";
 import { Scooter } from "../../domain/scooters/scooter";
 import ScooterMarker from "../../components/map/scooterMarker";
 import ScooterInfoModal from "../../components/map/scooterInfoModal";
 import MapView, { Region } from "react-native-maps";
+import { useRentalContext } from "../../contexts/rentalContext";
+import RentInfo from "../../components/map/rentInfo";
 
 function RentalScreen() {
   const [scooters, setScooters] = useState<Scooter[]>([]);
   const [selectedScooter, setSelectedScooter] = useState<Scooter | null>(null);
+  const {activeRent, endRent} = useRentalContext()
   const map: LegacyRef<MapView> = useRef(null);
 
   useEffect(() => {
@@ -44,6 +47,7 @@ function RentalScreen() {
 
   return (
     <View style={styles.container}>
+      {activeRent != null && <RentInfo rent={activeRent} onEndRent={endRent}/>}
       {selectedScooter != null && <ScooterInfoModal
             scooter={selectedScooter}
             onClose={() => setSelectedScooter(null)}

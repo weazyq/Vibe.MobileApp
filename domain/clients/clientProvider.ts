@@ -5,7 +5,6 @@ import { ClientBlank } from "./clientBlank";
 import { LoginResultDTO } from "../infrastructure/loginResultDTO";
 import { Client, mapToClient } from "./client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Rent } from "../rents/rent";
 
 export class ClientProvider {
     static async sendSms(phoneNumber: string): Promise<Result> {

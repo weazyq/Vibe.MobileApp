@@ -4,6 +4,8 @@ import Result from "../../tools/result";
 import { ClientBlank } from "./clientBlank";
 import { LoginResultDTO } from "../infrastructure/loginResultDTO";
 import { Client, mapToClient } from "./client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Rent } from "../rents/rent";
 
 export class ClientProvider {
     static async sendSms(phoneNumber: string): Promise<Result> {
@@ -32,12 +34,14 @@ export class ClientProvider {
         return Result.success(registerResult)
     }
 
-    static async getClient(userId: string): Promise<Client> {
-        const response = await axios.get(`${Constants.serverUrl}/GetClient`, { 
-            params: {
-                userId
-            },
-            ...Constants.axiosConfig
+    static async getClient(): Promise<Client> {
+        const token = await AsyncStorage.getItem('token')
+
+        const response = await axios.get(`${Constants.serverUrl}/GetClient`, {
+            headers: {
+                ...Constants.axiosConfig.headers,
+                Authorization: `Bearer ${token}`
+            }
         })
 
         return mapToClient(response.data)

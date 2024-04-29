@@ -4,12 +4,13 @@ import { inputStyles } from "../../../styles/styles"
 
 interface IProps {
     label?: string
-    onChange: (value: string, isValid: boolean) => void
+    value: string
     hasErrors?: boolean
+    onChange: (value: string, isValid: boolean) => void
 }
 
 function PhoneInput(props: IProps) {
-    const [value, setValue] = useState<string | null>('')
+    const [value, setValue] = useState<string | null>(props.value)
     const [validateMessage, setValidateMessage] = useState<string | null>(null)
 
     const phoneRegex = /^\+7\d{10}$/

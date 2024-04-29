@@ -5,17 +5,17 @@ import BaseInput from "../baseInput"
 
 interface IProps {
     label?: string
+    value: string
     onChange: (value) => void
 }
 
 function CTextInput(props: IProps) {
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string>(props.value)
 
     function handleInputChange(text: string) {
         setValue(text)
         props.onChange(text)
     }
-
 
     return (
         <View>

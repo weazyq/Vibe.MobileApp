@@ -2,26 +2,41 @@ import PhoneCodeInput from "./phoneCodeInput/phoneCodeInput";
 import PhoneInput from "./phoneInput/phoneInput";
 import CTextInput from "./textInput/textInput";
 
-interface IProps {
-    type: 'text' | 'textarea' | 'number' | 'phone'
+type TextInputPropsType = {type: 'text'} & {
+    label?: string,
+    value: string,
+    onChange: (value: string) => void
+}
+type PhoneInputPropsType = {type: 'phone'} & {
     label?: string
     value: string
-    onChange: (value: string | number, isValid?: boolean) => void
+    onChange: (value: string, isValid: boolean) => void
+}
+type CodeInputPropsType = {type: 'code'} & {
+    length: number
+    onChange: (code: string) => void
 }
 
-function Input(props: IProps) {
+export type Props<T> = (
+    TextInputPropsType |
+    PhoneInputPropsType |
+    CodeInputPropsType
+)
+
+function Input<T>(props: Props<T>) {
     switch (props.type) {
         case 'text':
             return (
                 <CTextInput
                     label={props.label}
+                    value={props.value}
                     onChange={props.onChange}
                 />
             )
-        case 'number':
+        case 'code':
             return (
                 <PhoneCodeInput
-                    label={props.label}
+                    length={props.length}
                     onChange={props.onChange}
                 />
             )
@@ -29,6 +44,7 @@ function Input(props: IProps) {
             return (
                 <PhoneInput
                     label={props.label}
+                    value={props.value}
                     onChange={props.onChange}
                 />
             )

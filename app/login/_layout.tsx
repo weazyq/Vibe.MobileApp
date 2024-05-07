@@ -5,7 +5,8 @@ const LoginLayout = () => {
     return <LoginContext>
         <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }}/>
-            <Stack.Screen name="getDataPage" options={{ headerTitle: '' }}/>
+            <Stack.Screen name="registerPage" options={{ headerTitle: '' }}/>
+            <Stack.Screen name="authPage" options={{ headerTitle: '' }}/>
             <Stack.Screen name="checkSmsPage" options={{ headerTitle: '' }}/>
         </Stack>
     </LoginContext>

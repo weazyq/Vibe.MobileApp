@@ -7,8 +7,12 @@ import { router } from 'expo-router';
 
 function LoginHome() {
 
-    function handleButtonClick() {
-        router.push("/login/getDataPage")
+    function handleRegisterButtonClick() {
+        router.push("/login/registerPage")
+    }
+
+    function handleAuthButtonClick() {
+        router.push("/login/authPage")
     }
 
     return (
@@ -31,12 +35,13 @@ function LoginHome() {
                 label={"Регистрация"}
                 size="large"
                 sx={{ marginBottom: 15 }}
-                onClick={handleButtonClick} />
+                onClick={handleRegisterButtonClick} />
 
             <Button
                 label={"Я уже зарегестрирован"}
                 size="medium"
                 variant="elevated"
+                onClick={handleAuthButtonClick}
             />
 
             <Typography variant="smallFont" align="center" style={textStyles.secondaryText}

@@ -6,60 +6,72 @@ import { ClientProvider } from "../../domain/clients/clientProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { router } from "expo-router"
 import { useLoginPage } from "../../contexts/loginContext"
+import { useLocalSearchParams } from "expo-router"
+import { LoginResultDTO } from "../../domain/infrastructure/loginResultDTO"
 
 function CheckSmsPage() {
-  const {clientBlank} = useLoginPage()
+    const { isAuthorize } = useLocalSearchParams()
+    const { clientBlank } = useLoginPage()
 
-  function authorize(userId: string, token: string, refreshToken: string) {
-    AsyncStorage.setItem('refreshToken', refreshToken)
-    AsyncStorage.setItem('token', token)
-    AsyncStorage.setItem('userId', userId)
-    
-    router.replace('rent')
-  }
+    function authorize(userId: string, token: string, refreshToken: string) {
+        AsyncStorage.setItem('refreshToken', refreshToken)
+        AsyncStorage.setItem('token', token)
+        AsyncStorage.setItem('userId', userId)
+        
+        router.replace('rent')
+    }
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const phoneCodeLength = 4
-  const codePatternRegex: RegExp = new RegExp(`^\\d{${phoneCodeLength}}$`)
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const phoneCodeLength = 4
+    const codePatternRegex: RegExp = new RegExp(`^\\d{${phoneCodeLength}}$`)
 
-  useEffect(() => {
-      sendSms()
-  }, [])
+    useEffect(() => {
+        sendSms()
+    }, [])
 
-  async function sendSms() {
-      await ClientProvider.sendSms(clientBlank.phone)
-  }
+    async function sendSms() {
+        await ClientProvider.sendSms(clientBlank.phone)
+    }
 
-  async function handlePhoneCodeChanged(phoneCode: string) {
-      if (!codePatternRegex.test(phoneCode)) return
+    async function handlePhoneCodeChanged(phoneCode: string) {
+        if (!codePatternRegex.test(phoneCode)) return
 
-      const response = await ClientProvider.checkSms(clientBlank, phoneCode)
-      if (!response.isSuccess) return setErrorMessage(response.errors[0])
+        let loginResult: LoginResultDTO
 
-      authorize(response.data.userId, response.data.token, response.data.refreshToken)
-  }
+        if(!isAuthorize) {
+            const response = await ClientProvider.checkSms(clientBlank, phoneCode)
+            if (!response.isSuccess) return setErrorMessage(response.errors[0])
+            loginResult = response.data
+        } else {
+            const response = await ClientProvider.login(clientBlank, phoneCode)
+            if (!response.isSuccess) return setErrorMessage(response.errors[0])
+            loginResult = response.data
+        }
+
+        authorize(loginResult.userId, loginResult.token, loginResult.refreshToken)
+    }
 
   return (
     <View style={[containerStyles.flexCenter, containerStyles.fullHeight, { gap: 10 }]}>
-            <Text style={[textStyles.header2, textStyles.textCenter, { marginBottom: 20 }]}>
-                Введи код из SMS
+        <Text style={[textStyles.header2, textStyles.textCenter, { marginBottom: 20 }]}>
+            Введи код из SMS
+        </Text>
+        <Text style={[textStyles.header4, textStyles.textCenter]}>
+            Код придёт в течении минуты на номер:
+        </Text>
+        <Text style={[textStyles.primaryText, textStyles.textCenter]}>
+            {clientBlank.phone}
+        </Text>
+        <PhoneCodeInput
+            length={phoneCodeLength}
+            onChange={handlePhoneCodeChanged}
+        />
+        {errorMessage &&
+            <Text>
+                {errorMessage}
             </Text>
-            <Text style={[textStyles.header4, textStyles.textCenter]}>
-                Код придёт в течении минуты на номер:
-            </Text>
-            <Text style={[textStyles.primaryText, textStyles.textCenter]}>
-                {clientBlank.phone}
-            </Text>
-            <PhoneCodeInput
-                length={phoneCodeLength}
-                onChange={handlePhoneCodeChanged}
-            />
-            {errorMessage &&
-                <Text>
-                    {errorMessage}
-                </Text>
-            }
-        </View>
+        }
+    </View>
   )
 }
 

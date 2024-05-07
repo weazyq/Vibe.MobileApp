@@ -1,5 +1,6 @@
 export default class Error {
     constructor(
-        public message: string
+        public message: string,
+        public key: string | null
     ) { }
 }

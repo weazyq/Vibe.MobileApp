@@ -1,8 +1,10 @@
+import Error from "./error"
+
 export default class Result<T = null> {
     public isSuccess: boolean
 
     constructor(
-        public errors: string[],
+        public errors: Error[],
         public data: T = <any>null
     ) {
         this.isSuccess = errors.length <= 0
@@ -12,7 +14,7 @@ export default class Result<T = null> {
         return new Result<T>([], value)
     }
 
-    public static fail(error: string): Result {
+    public static fail(error: Error): Result {
         return new Result([error])
     }
 }

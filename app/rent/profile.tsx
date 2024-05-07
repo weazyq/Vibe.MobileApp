@@ -1,6 +1,6 @@
 import { View, Text } from "react-native"
 import Typography from "../../components/typography/typography"
-import { containerStyles, textStyles } from "../../styles/styles"
+import { Colors, containerStyles, textStyles } from "../../styles/styles"
 import Divider from "../../components/dividers/divider"
 import { useRentalContext } from "../../contexts/rentalContext"
 import { RentProvider } from "../../domain/rents/rentProvider"
@@ -8,10 +8,13 @@ import { useEffect, useState } from "react"
 import { Rent } from "../../domain/rents/rent"
 import Property from "../../components/typography/property"
 import { intervalToDuration } from "date-fns"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import { useAuthContext } from "../../contexts/authContext"
 
 function Profile() {
 
     const {client} = useRentalContext()
+    const {logout} = useAuthContext()
     const [rents, setRents] = useState<Rent[]>([])
     
     async function getRentHistory() {
@@ -22,6 +25,10 @@ function Profile() {
     useEffect(() => {
         getRentHistory()
     }, [])
+
+    function handleLogOut(){
+        logout()
+    }
 
     function renderRent(rent: Rent, index: number){
         const rentDuration = intervalToDuration({
@@ -50,12 +57,16 @@ function Profile() {
     return (
         <View style={[containerStyles.fullHeight, containerStyles.fullWidth, { paddingHorizontal: 20, paddingTop: 50 }]}>
             <View>
-                <Typography
-                    variant="h3"
-                    text="Профиль"
-                    gutterBottom
-                    style={{fontWeight: 'bold'}}
-                />
+                <View style={[containerStyles.spaceBetween]}>
+                    <Typography
+                        variant="h3"
+                        text="Профиль"
+                        gutterBottom
+                        style={{fontWeight: 'bold'}}
+                    />
+                    <Icon name="exit-to-app" color={Colors.primary.light} size={32} onPress={handleLogOut}/>
+                </View>
+
                 <Divider />
                 <Typography
                     variant="paragraph"

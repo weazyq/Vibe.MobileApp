@@ -1,11 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { createContext, useContext, useState } from "react"
 import { AuthUserProvider } from "../domain/infrastructure/authUserProvider"
+import { router } from "expo-router"
 
 interface AuthContext {
     isAuthenticated: boolean,
     onAuthorize: (userId: string, token: string, refreshToken: string) => void
     checkAuthorize: () => Promise<void>
+    logout: () => void
 }
 
 export const AuthContext = createContext<AuthContext | undefined>(undefined)
@@ -15,7 +17,8 @@ function AuthProvider({ children }) {
     {
         isAuthenticated: false,
         onAuthorize: authrorize,
-        checkAuthorize: checkAuthorize
+        checkAuthorize: checkAuthorize,
+        logout: logout,
     }
 
     const [authContext, setAuthContext] = useState<AuthContext>(defaultValue)
@@ -43,6 +46,15 @@ function AuthProvider({ children }) {
         }
 
         authrorize(response.data.userId, response.data.token, response.data.refreshToken)
+    }
+
+    function logout() {
+        AsyncStorage.clear()
+        changeContext({
+            isAuthenticated: false
+        })
+        
+        router.replace('/')
     }
 
     return (

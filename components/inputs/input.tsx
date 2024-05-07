@@ -2,17 +2,17 @@ import PhoneCodeInput from "./phoneCodeInput/phoneCodeInput";
 import PhoneInput from "./phoneInput/phoneInput";
 import CTextInput from "./textInput/textInput";
 
-type TextInputPropsType = {type: 'text'} & {
+export type TextInputPropsType = {type: 'text'} & {
     label?: string,
     value: string,
     onChange: (value: string) => void
 }
-type PhoneInputPropsType = {type: 'phone'} & {
+export type PhoneInputPropsType = {type: 'phone'} & {
     label?: string
     value: string
     onChange: (value: string, isValid: boolean) => void
 }
-type CodeInputPropsType = {type: 'code'} & {
+export type CodeInputPropsType = {type: 'code'} & {
     length: number
     onChange: (code: string) => void
 }

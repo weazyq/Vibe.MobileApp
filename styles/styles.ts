@@ -22,6 +22,14 @@ export class Colors {
     static warning = '#B67A42'
 }
 
+export const modalStyles = StyleSheet.create({
+    modalBase: {
+        position: 'absolute',
+        bottom: 0,
+        zIndex: 1000
+    }
+})
+
 export const textStyles = StyleSheet.create({
     header1: {
         fontSize: 36,

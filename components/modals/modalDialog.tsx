@@ -3,6 +3,7 @@ import { containerStyles, modalStyles } from "../../styles/styles"
 import Typography from "../typography/typography"
 import Divider from "../dividers/divider"
 import { StyleSheet } from 'react-native'
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
 interface ModalProps{
   isOpen: boolean
@@ -28,7 +29,10 @@ function ModalDialog(props: ModalProps) {
   return (
     <View style={[modalDialogStyles.baseStyles, modalDialogStyles.dialogStyles]}>
       <View style={{marginBottom: 20}}>
-        <Typography text={props.title} variant="h4" gutterBottom/>
+        <View style={[containerStyles.spaceBetween, containerStyles.alignItemsCenter]}>
+          <Typography text={props.title} variant="h4" gutterBottom/>
+          <Icon name="close" size={32} onPress={props.onClose}/>
+        </View>
         <Divider/>
       </View>
 

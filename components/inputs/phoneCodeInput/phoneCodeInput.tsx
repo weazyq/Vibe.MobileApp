@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
-import { NativeSyntheticEvent, TextInput, TextInputKeyPressEventData, View } from "react-native"
-import { containerStyles } from "../../../styles/styles"
+import { NativeSyntheticEvent, StyleProp, StyleSheet, TextInput, TextInputKeyPressEventData, TextStyle, View } from "react-native"
+import { Colors, containerStyles } from "../../../styles/styles"
 
 interface IProps {
     length: number
@@ -8,8 +8,9 @@ interface IProps {
 }
 
 function PhoneCodeInput({ length, onChange }: IProps) {
-    const [code, setCode] = useState<Array<string>>([])
     const inputRefs = useRef<Array<TextInput>>([])
+    const [code, setCode] = useState<Array<string>>([])
+    const [currentInputIndex, setCurrentInputIndex] = useState<number | null>(null)
 
     function onChangeValue(text: string, valueIndex: number) {
         let newValue: string[] = [];
@@ -43,6 +44,26 @@ function PhoneCodeInput({ length, onChange }: IProps) {
         }
     }
 
+    const getStyle = (index: number): StyleProp<TextStyle> => {
+        return {
+            borderWidth: 2, 
+            width: 40, 
+            height: 60, 
+            borderRadius: 10,
+            fontSize: 20,
+            fontWeight: '600',
+            textAlign: 'center', 
+            backgroundColor: 'white',
+            borderColor: currentInputIndex == index 
+                ? Colors.primary.light
+                : Colors.disabledText
+        }
+    } 
+
+    function handleFocus(index: number){
+        setCurrentInputIndex(index)
+    }
+
     return (
         <View style={[containerStyles.spaceBetween, {gap: 20}]}>
             {[...new Array(length)].map((item, index) => (
@@ -55,13 +76,13 @@ function PhoneCodeInput({ length, onChange }: IProps) {
                     key={index}
                     inputMode="numeric"
                     maxLength={1}
-                    style={{ borderColor: "#000", borderWidth: 1, width: 40, height: 60, borderRadius: 10, textAlign: 'center' }}
                     contextMenuHidden
                     selectTextOnFocus
                     keyboardType="decimal-pad"
                     testID={`OTPInput-${index}`}
-
                     value={code[index]}
+                    style={getStyle(index)}
+                    onFocus={() => handleFocus(index)}
                     onChangeText={text => handleTextChange(text, index)}
                     onKeyPress={event => handleBackSpace(event, index)}
                 />

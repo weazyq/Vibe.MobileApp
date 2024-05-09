@@ -22,8 +22,8 @@ function RenderApp(): JSX.Element {
         if(!router.isReady || !isLoading) return
         await checkAuthorize()
         isLoading = false;
-        if(isAuthenticated) return router.replace('rent')
         router.replace('login')
+        if(isAuthenticated) return router.replace('rent/map')
     }
     
     useEffect(() => {

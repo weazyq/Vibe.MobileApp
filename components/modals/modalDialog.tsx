@@ -42,7 +42,7 @@ function ModalDialog(props: ModalProps) {
         </View>
       }
 
-      <View style={[containerStyles.flex, {marginTop: 10}]}>
+      <View style={[containerStyles.flex, {marginTop: 10, gap: 10}]}>
         {props.actionsContent}
       </View>
     </View>

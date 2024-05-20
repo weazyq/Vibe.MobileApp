@@ -33,7 +33,7 @@ export class ClientProvider {
 
     static async login(clientBlank: ClientBlank, code: string): Promise<Result<LoginResultDTO>> {
         const response = await axios.post(`${Constants.serverUrl}/Login`, { clientBlank, code }, Constants.axiosConfig)
-        if (!response.data.isSuccess) return Result.fail(response.data.errors[0].message)
+        if (!response.data.isSuccess) return Result.fail(response.data.errors[0])
 
         const registerResult: LoginResultDTO = {
             userId: response.data.value.userId,

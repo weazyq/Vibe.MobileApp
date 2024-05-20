@@ -16,7 +16,6 @@ function AuthPage() {
     const router = useRouter()
 
     async function handleChangePhone(value: string, isValid?: boolean) {
-        
         if(isValid) {
             Keyboard.dismiss()
             setClientBlank((blank) => ({...blank, phone: value}))
@@ -27,7 +26,7 @@ function AuthPage() {
                 return router.push(
                     { 
                         pathname: '/login/checkSmsPage', 
-                        params: {isAuthorize: true}
+                        params: {isAuthorize: 'authorize'}
                     }
                 )
             
@@ -35,10 +34,10 @@ function AuthPage() {
                 isOpen 
                 title="Ошибка авторизации"
                 bodyText="Указанный тобой номер телефона ещё не зарегистрирован в системе"
-                actionsContent={<View style={[containerStyles.flex, {gap: 10}]}>
+                actionsContent={<>
                     <Button variant="elevated" label="Изменить номер" size="medium" onClick={hideModal}/>
                     <Button variant="contained" label="Перейти к регистрации" size="medium" onClick={() => router.push("login/registerPage")}/>
-                </View>}
+                </>}
                 onClose={hideModal}
             />)
         }

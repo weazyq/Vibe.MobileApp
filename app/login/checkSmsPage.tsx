@@ -49,14 +49,14 @@ function CheckSmsPage() {
     }
 
     async function handlePhoneCodeChanged(phoneCode: string) {
-        if (!codePatternRegex.test(phoneCode) || isShowTimer) return
+        if (!codePatternRegex.test(phoneCode)) return
 
         let loginResult: LoginResultDTO
 
-        if(!isAuthorize) {
+        if(isAuthorize !== 'authorize') {
             const response = await ClientProvider.checkSms(clientBlank, phoneCode)
             if (!response.isSuccess) return setErrorMessage(response.errors[0].message)
-            loginResult = response.data
+                loginResult = response.data
         } else {
             const response = await ClientProvider.login(clientBlank, phoneCode)
             if (!response.isSuccess) return setErrorMessage(response.errors[0].message)
@@ -72,7 +72,8 @@ function CheckSmsPage() {
     }
 
     function handleChangePhoneNumber(){
-        router.replace('login/authPage')
+        if(isAuthorize === 'authorize') return router.replace('login/authPage')
+        router.replace('login/registerPage')
     }
 
     function handleRepeatSendSms() {

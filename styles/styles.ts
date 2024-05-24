@@ -75,6 +75,10 @@ export const containerStyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row'
     },
+    alignItemsCenter: {
+        display: 'flex',
+        alignItems: "center"
+    },
     flexCenter: {
         display: "flex",
         justifyContent: "center",

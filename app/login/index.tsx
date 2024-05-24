@@ -44,7 +44,7 @@ function LoginHome() {
                 onClick={handleAuthButtonClick}
             />
 
-            <Typography variant="smallFont" align="center" style={textStyles.secondaryText}
+            <Typography variant="smallFont" align="center" sx={textStyles.secondaryText}
                 text="Нажимая «Регистрация», Вы принимаете договор присоединения и политику конфиденциальности"
             />
         </View>

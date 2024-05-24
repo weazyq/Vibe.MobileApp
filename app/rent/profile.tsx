@@ -45,7 +45,7 @@ function Profile() {
                 marginTop: 10
         }]}>
             <View style={[containerStyles.spaceBetween]}>
-                <Typography variant="paragraph" text={`#${index}`} style={{fontWeight: "bold"}}/>
+                <Typography variant="paragraph" text={`#${index}`} sx={{fontWeight: "bold"}}/>
                 <Text style={textStyles.secondaryText}>{new Date(rent.startedAt).toLocaleString()}</Text>
             </View>
             <Property label="Самокат:" value={rent.scooterId}/>
@@ -62,19 +62,22 @@ function Profile() {
                         variant="h3"
                         text="Профиль"
                         gutterBottom
-                        style={{fontWeight: 'bold'}}
+                        sx={{fontWeight: 'bold'}}
                     />
-                    <Icon name="exit-to-app" color={Colors.primary.light} size={32} onPress={handleLogOut}/>
+                    <View style={[containerStyles.flex, containerStyles.alignItemsCenter, {gap: 5}]}>
+                        <Typography variant="paragraph" text="Выход" sx={{fontWeight: 'bold'}}/>
+                        <Icon name="exit-to-app" color={'black'} size={32} onPress={handleLogOut}/>
+                    </View>
                 </View>
-
                 <Divider />
+
                 <Typography
                     variant="paragraph"
-                    text={client.name}
+                    text={`Имя: ${client.name}`}
                 />
                 <Typography
                     variant="paragraph"
-                    text={client.phone}
+                    text={`Номер телефона: ${client.phone}`}
                 />
             </View>
 
@@ -82,7 +85,7 @@ function Profile() {
                 <Typography
                     variant="h3"
                     text="История поездок"
-                    style={{fontWeight: 'bold'}}
+                    sx={{fontWeight: 'bold'}}
                     gutterBottom                    
                     />
                 <Divider sx={{marginBottom: 10}}/>

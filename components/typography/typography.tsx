@@ -4,17 +4,17 @@ interface TypographyProps {
     variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'paragraph' | 'smallFont'
     align?: 'left' | 'center' | 'right'
     text: string
-    style?: TextStyle
+    sx?: TextStyle
     gutterBottom?: boolean
 }
 
-function Typography({ variant, align, text, style, gutterBottom }: TypographyProps) {
+function Typography({ variant, align, text, sx, gutterBottom }: TypographyProps) {
     const variantStyles = getVariantStyles(variant)
     const alignStyles = getAlignStyles(align)
     const gutterStyles: TextStyle = gutterBottom ? { marginBottom: 10 } : { marginBottom: 0 }
 
     return (
-        <Text style={[variantStyles, alignStyles, gutterStyles, style]}>
+        <Text style={[variantStyles, alignStyles, gutterStyles, sx]}>
             {text}
         </Text>
     )

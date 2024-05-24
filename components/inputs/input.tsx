@@ -1,3 +1,4 @@
+import { StyleProp, TextStyle } from "react-native";
 import PhoneCodeInput from "./phoneCodeInput/phoneCodeInput";
 import PhoneInput from "./phoneInput/phoneInput";
 import CTextInput from "./textInput/textInput";
@@ -5,6 +6,8 @@ import CTextInput from "./textInput/textInput";
 export type TextInputPropsType = {type: 'text'} & {
     label?: string,
     value: string,
+    maxLength?: number
+    sx?: StyleProp<TextStyle>
     onChange: (value: string) => void
 }
 export type PhoneInputPropsType = {type: 'phone'} & {
@@ -30,6 +33,8 @@ function Input<T>(props: Props<T>) {
                 <CTextInput
                     label={props.label}
                     value={props.value}
+                    maxLength={props.maxLength}
+                    sx={props.sx}
                     onChange={props.onChange}
                 />
             )

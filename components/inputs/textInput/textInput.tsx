@@ -1,33 +1,40 @@
 import { useState } from "react"
-import { Text, View } from "react-native"
-import { inputStyles } from "../../../styles/styles"
+import { StyleProp, Text, TextStyle, View } from "react-native"
+import { Colors, inputStyles } from "../../../styles/styles"
 import BaseInput from "../baseInput"
 
 interface IProps {
     label?: string
     value: string
-    onChange: (value) => void
+    maxLength?: number
+    sx?: StyleProp<TextStyle>
+    onChange: (value: string) => void
 }
 
 function CTextInput(props: IProps) {
-    const [value, setValue] = useState<string>(props.value)
 
-    function handleInputChange(text: string) {
-        setValue(text)
-        props.onChange(text)
-    }
+    const isMaxLengthReached = props.maxLength != null && props.maxLength == props.value?.length
 
     return (
-        <View>
+        <View style={props.sx}>
             {props.label &&
                 <Text style={inputStyles.inputTitle}>
                     {props.label}
                 </Text>
             }
             <BaseInput
-                value={value}
-                onChangeText={handleInputChange}
+                value={props.value}
+                maxLength={props.maxLength}
+                onChangeText={props.onChange}
             />
+            {props.maxLength &&
+                <View style={{alignItems: "flex-end"}}>
+                    <Text style={{color: isMaxLengthReached 
+                        ? Colors.error
+                        : Colors.disabledText
+                    }}>{props.value?.length ?? 0} / {props.maxLength}</Text>
+                </View>
+            }
         </View>
     )
 }

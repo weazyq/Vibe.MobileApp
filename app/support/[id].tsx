@@ -3,28 +3,66 @@ import React, { useEffect, useState } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { SupportRequestDetail } from '../../domain/supportrequests/supportRequestDetail';
 import SupportRequestProvider from '../../domain/supportrequests/supportRequestsProvider';
-import { SupportMessage } from '../../domain/supportrequests/messages/supportMessage';
+import { SupportMessage, mapToSupportMessage } from '../../domain/supportrequests/messages/supportMessage';
 import { Colors, containerStyles } from '../../styles/styles';
 import Typography from '../../components/typography/typography';
 import Input from '../../components/inputs/input';
 import Button from '../../components/buttons/button';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SupportRequest } from '../../domain/supportrequests/supportRequest';
 import { SupportMessageDTO } from '../../domain/supportrequests/messages/supportMessageDTO';
+import Constants from '../../constants/constants';
 
-function SupportRequest() {
+function SupportRequestChat() {
     const {id} = useLocalSearchParams();
-    const [supportRequestDetail, setSupportRequestDetail] = useState<SupportRequestDetail | null>(null)    
+    const [supportRequest, setSupportRequest] = useState<SupportRequest | null>(null)
+    const [messages, setMessages] = useState<SupportMessage[]>([])
     const [message, setMessage] = useState<string>('')
+    const [connection, setConnection] = useState<HubConnection | null>(null)
+
+    const joinChat = async() => {
+        const connection = new HubConnectionBuilder()
+            .withUrl(`${Constants.serverUrl}/supportRequest`, {
+                headers: {
+                    "ngrok-skip-browser-warning": "1"
+                }
+            })
+            .withAutomaticReconnect()
+            .build();
+
+        const userId = await AsyncStorage.getItem('userId')
+            
+        connection.on("ReceiveMessage", (message: SupportMessage) => {
+            const mappedMessage = mapToSupportMessage(message)
+            setMessages((messages) => [...messages, mappedMessage])
+        })
+
+        try {
+            await connection.start();
+            await connection.invoke("JoinChat", {supportRequestId: supportRequest.id, userId})
+            setConnection(connection)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
         loadSupportRequestDetail(id as string)
+        joinChat()
     }, [])
+
+    useEffect(() => {
+        if(supportRequest == null) return
+        joinChat()
+    }, [supportRequest])
 
     function handleChangeMessage(message: string){
         setMessage(message)
     }
 
     async function handleSaveMessage(){
-        const messageDTO = new SupportMessageDTO(message, supportRequestDetail.id)
+        const messageDTO = new SupportMessageDTO(message, supportRequest.id)
         const response = await SupportRequestProvider.saveSupportMessage(messageDTO)
         if(!response.isSuccess) return 
 
@@ -33,14 +71,14 @@ function SupportRequest() {
 
     return (
         <View style={[containerStyles.fullHeight, containerStyles.spaceBetween, containerStyles.flexColumn, {padding: 20}]}>
-            {supportRequestDetail != null &&
+            {supportRequest != null &&
                 <View>
                     <View style={{ backgroundColor: "white", borderRadius: 5, padding: 10 }}>
-                        <Typography text={supportRequestDetail.title}/>
-                        <Typography text={supportRequestDetail.description}/>
+                        <Typography text={supportRequest.title}/>
+                        <Typography text={supportRequest.description}/>
                     </View>
 
-                    {supportRequestDetail.messages.map(message => renderMessage(message))}
+                    {messages.map(message => renderMessage(message))}
                 </View>
             }
 
@@ -57,7 +95,7 @@ function SupportRequest() {
     )
 
     function renderMessage(message: SupportMessage){
-        const isClientMessage = supportRequestDetail.clientId === message.createdBy
+        const isClientMessage = supportRequest.clientId === message.createdBy
         
         const baseMessageStyle: StyleProp<ViewStyle> = {
             display: 'flex',
@@ -92,8 +130,9 @@ function SupportRequest() {
         const supportRequestDetail: SupportRequestDetail | null = await SupportRequestProvider.get(requestId)
         if(supportRequestDetail == null) return
 
-        setSupportRequestDetail(supportRequestDetail)
+        setSupportRequest(supportRequestDetail)
+        setMessages(supportRequestDetail.messages)
     }
 }
 
-export default SupportRequest
+export default SupportRequestChat

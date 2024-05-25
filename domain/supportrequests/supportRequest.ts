@@ -6,23 +6,12 @@ export class SupportRequest{
         public clientId: string,
         public employeeId: string | null,
         public openedAt: Date,
-        public lastEmployeeAnswerAt: Date | null,
-        public lastClientAnswerAt: Date | null,
         public isClosed: boolean
     ) { }
 }
 
 export function mapToSupportRequest(data: any): SupportRequest {
-
-    const lastEmployeeAnswerAt = data.lastEmployeeAnswerAt != null 
-        ? new Date(data.lastEmployeeAnswerAt)
-        : null
-    
-    const lastClientAnswerAt = data.lastClientAnswerAt != null 
-        ? new Date(data.lastClientAnswerAt)
-        : null
-
-    return new SupportRequest(data.id, data.title, data.description, data.clientId, data.employeeId, new Date(data.openedAt), lastEmployeeAnswerAt, lastClientAnswerAt, 
+    return new SupportRequest(data.id, data.title, data.description, data.clientId, data.employeeId, new Date(data.openedAt), 
         data.isClosed)    
 }
 

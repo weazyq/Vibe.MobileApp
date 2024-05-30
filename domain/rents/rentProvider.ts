@@ -19,7 +19,7 @@ export class RentProvider {
             },
         })
 
-        if(!response.data.isSuccess) return Result.fail('Не удалось инициализировать аренду')
+        if(!response.data.isSuccess) return Result.fail(response.data.errors[0])
 
         const rent = mapToRent(response.data.value)
         return Result.success(rent)

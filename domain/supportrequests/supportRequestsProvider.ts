@@ -28,7 +28,7 @@ export default class SupportRequestProvider {
   static async saveSupportMessage(message: SupportMessageDTO): Promise<Result<null>> {
     const token = await AsyncStorage.getItem('token')
     
-    const response = await axios.post(`${Constants.serverUrl}/SaveSupportMessage`, message, 
+    const response = await axios.post(`${Constants.serverUrl}/SupportRequests/SaveSupportMessage`, message, 
     {
       headers: {
         ...Constants.axiosConfig.headers,
@@ -43,7 +43,7 @@ export default class SupportRequestProvider {
   static async get(id: string): Promise<SupportRequestDetail | null> {
     const token = await AsyncStorage.getItem('token')
 
-    const response = await axios.get(`${Constants.serverUrl}/GetSupportRequestDetail`, {
+    const response = await axios.get(`${Constants.serverUrl}/SupportRequests/GetSupportRequestDetail`, {
       params: {
         id
       },
@@ -60,7 +60,7 @@ export default class SupportRequestProvider {
   static async list(): Promise<SupportRequest[]> {
     const token = await AsyncStorage.getItem('token')
     
-    const response = await axios.get(`${Constants.serverUrl}/GetSupportRequests`, {
+    const response = await axios.get(`${Constants.serverUrl}/SupportRequests/GetSupportRequests`, {
       headers: {
         ...Constants.axiosConfig.headers,
         Authorization: `Bearer ${token}`

@@ -10,20 +10,19 @@ import Input from '../../components/inputs/input';
 import Button from '../../components/buttons/button';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SupportRequest } from '../../domain/supportrequests/supportRequest';
 import { SupportMessageDTO } from '../../domain/supportrequests/messages/supportMessageDTO';
 import Constants from '../../constants/constants';
 
 function SupportRequestChat() {
     const {id} = useLocalSearchParams();
-    const [supportRequest, setSupportRequest] = useState<SupportRequest | null>(null)
+    const [supportRequest, setSupportRequest] = useState<SupportRequestDetail | null>(null)
     const [messages, setMessages] = useState<SupportMessage[]>([])
     const [message, setMessage] = useState<string>('')
     const [connection, setConnection] = useState<HubConnection | null>(null)
 
     const joinChat = async() => {
         const connection = new HubConnectionBuilder()
-            .withUrl(`${Constants.serverUrl}/supportRequest`, {
+            .withUrl(`${Constants.serverUrl}/SupportRequestChat`, {
                 headers: {
                     "ngrok-skip-browser-warning": "1"
                 }
@@ -49,7 +48,6 @@ function SupportRequestChat() {
 
     useEffect(() => {
         loadSupportRequestDetail(id as string)
-        joinChat()
     }, [])
 
     useEffect(() => {
@@ -95,7 +93,7 @@ function SupportRequestChat() {
     )
 
     function renderMessage(message: SupportMessage){
-        const isClientMessage = supportRequest.clientId === message.createdBy
+        const isClientMessage = supportRequest.client.id === message.createdBy
         
         const baseMessageStyle: StyleProp<ViewStyle> = {
             display: 'flex',
@@ -113,14 +111,20 @@ function SupportRequestChat() {
             }
             : {
                 backgroundColor: 'white',
-                justifyContent: 'flex-end'
+                justifyContent: 'flex-end',
             }
 
         return (
             <View key={message.id} style={[baseMessageStyle, messageStyle]}>
-                <Typography text={message.text} sx={{color: 'white'}}/>
+                <Typography text={message.text} sx={{color: isClientMessage 
+                        ? 'white'
+                        : 'black'
+                    }}/>
                 <View style={{position: 'absolute', bottom: 2, right: 5}}>
-                    <Typography text={message.createdAt.toLocaleTimeString()} sx={{color: 'white'}}/>
+                    <Typography text={message.createdAt.toLocaleTimeString()} sx={{color: isClientMessage 
+                        ? 'white'
+                        : 'black'
+                    }}/>
                 </View>
             </View>
         )

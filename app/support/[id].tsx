@@ -30,7 +30,7 @@ function SupportRequestChat() {
             .withAutomaticReconnect()
             .build();
 
-        const userId = await AsyncStorage.getItem('userId')
+        const clientId = await AsyncStorage.getItem('clientId')
             
         connection.on("ReceiveMessage", (message: SupportMessage) => {
             const mappedMessage = mapToSupportMessage(message)
@@ -39,7 +39,7 @@ function SupportRequestChat() {
 
         try {
             await connection.start();
-            await connection.invoke("JoinChat", {supportRequestId: supportRequest.id, userId})
+            await connection.invoke("JoinChat", {supportRequestId: supportRequest.id, userId: clientId})
             setConnection(connection)
         } catch (error) {
             console.log(error)

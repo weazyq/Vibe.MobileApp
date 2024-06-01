@@ -5,7 +5,7 @@ import { router } from "expo-router"
 
 interface AuthContext {
     isAuthenticated: boolean,
-    onAuthorize: (userId: string, token: string, refreshToken: string) => void
+    onAuthorize: (clientId: string, token: string, refreshToken: string) => void
     checkAuthorize: () => Promise<void>
     logout: () => void
 }
@@ -27,10 +27,10 @@ function AuthProvider({ children }) {
         setAuthContext((prevContext) => ({ ...prevContext, ...context }))
     }
 
-    function authrorize(userId: string, token: string, refreshToken: string) {
+    function authrorize(clientId: string, token: string, refreshToken: string) {
         AsyncStorage.setItem('refreshToken', refreshToken)
         AsyncStorage.setItem('token', token)
-        AsyncStorage.setItem('userId', userId)
+        AsyncStorage.setItem('clientId', clientId)
         
         changeContext({ isAuthenticated: true })
     }
@@ -45,7 +45,7 @@ function AuthProvider({ children }) {
             return await AsyncStorage.removeItem('refreshToken')
         }
 
-        authrorize(response.data.userId, response.data.token, response.data.refreshToken)
+        authrorize(response.data.clientId, response.data.token, response.data.refreshToken)
     }
 
     function logout() {

@@ -40,10 +40,10 @@ function CheckSmsPage() {
         }
     }
 
-    function authorize(userId: string, token: string, refreshToken: string) {
+    function authorize(clientId: string, token: string, refreshToken: string) {
         AsyncStorage.setItem('refreshToken', refreshToken)
         AsyncStorage.setItem('token', token)
-        AsyncStorage.setItem('userId', userId)
+        AsyncStorage.setItem('clientId', clientId)
         
         router.replace('rent/map')
     }
@@ -63,7 +63,7 @@ function CheckSmsPage() {
             loginResult = response.data
         }
 
-        authorize(loginResult.userId, loginResult.token, loginResult.refreshToken)
+        authorize(loginResult.clientId, loginResult.token, loginResult.refreshToken)
     }
 
     function handleTimerEnded() {

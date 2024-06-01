@@ -1,6 +1,6 @@
 export class LoginResultDTO {
     constructor(
-        public userId: string,
+        public clientId: string,
         public token: string,
         public refreshToken: string
     ) { }

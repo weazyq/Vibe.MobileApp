@@ -36,7 +36,7 @@ export class ClientProvider {
         if (!response.data.isSuccess) return Result.fail(response.data.errors[0])
 
         const registerResult: LoginResultDTO = {
-            userId: response.data.value.userId,
+            clientId: response.data.value.clientId,
             token: response.data.value.token,
             refreshToken: response.data.value.refreshToken
         }
@@ -49,7 +49,7 @@ export class ClientProvider {
         if (!response.data.isSuccess) return Result.fail(response.data.errors[0].message)
 
         const registerResult: LoginResultDTO = {
-            userId: response.data.value.userId,
+            clientId: response.data.value.clientId,
             token: response.data.value.token,
             refreshToken: response.data.value.refreshToken
         }

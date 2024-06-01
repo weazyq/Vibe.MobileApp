@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AwesomeProject",
-    "description": "app desc",
+    "name": "Vibe",
+    "description": "Vibe - шеринг самокатов",
     "slug": "AwesomeProject",
     "version": "1.0.0",
     "scheme": "vibe-app-scheme",

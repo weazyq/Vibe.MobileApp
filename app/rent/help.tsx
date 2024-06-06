@@ -10,7 +10,7 @@ import { SupportRequest } from "../../domain/supportrequests/supportRequest"
 
 function Help() {
   
-  const titles = ["Актуальные вопросы", "Как аредновать самокат?", "Как припарковать самокат?", "Можно-ли передвигаться вдвоём?", "Что делать если я повредил самокат?"]
+  const titles = ["Актуальные вопросы", "Как арендовать самокат?", "Как припарковать самокат?", "Можно-ли передвигаться вдвоём?", "Что делать если я повредил самокат?"]
   const [supportRequests, setSupportRequests] = useState<SupportRequest[]>([])
   
   useEffect(() => {

@@ -13,7 +13,7 @@ import { useAuthContext } from "../../contexts/authContext"
 
 function Profile() {
 
-    const {client} = useRentalContext()
+    const {client, activeRent} = useRentalContext()
     const {logout} = useAuthContext()
     const [rents, setRents] = useState<Rent[]>([])
     
@@ -24,7 +24,7 @@ function Profile() {
     
     useEffect(() => {
         getRentHistory()
-    }, [])
+    }, [activeRent])
 
     function handleLogOut(){
         logout()

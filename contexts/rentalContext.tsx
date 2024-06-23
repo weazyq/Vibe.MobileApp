@@ -40,7 +40,7 @@ function RentalProvider({ children }) {
 
     async function tryInitializeRent(scooterId: string, clientId: string): Promise<Result<null>> {
         const initializeRentResult = await RentProvider.initializeRent(scooterId, clientId)
-        if(!initializeRentResult.isSuccess) return Result.fail("Не удалось инициализировать аренду")
+        if(!initializeRentResult.isSuccess) return Result.fail(initializeRentResult.errors[0])
 
         setActiveRent(initializeRentResult.data)
         return Result.success(null)

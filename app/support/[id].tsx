@@ -116,7 +116,8 @@ function SupportRequestChat() {
 
         return (
             <View key={message.id} style={[baseMessageStyle, messageStyle]}>
-                <Typography text={message.text} sx={{color: isClientMessage 
+                <Typography text={message.text} gutterBottom sx={{
+                    color: isClientMessage 
                         ? 'white'
                         : 'black'
                     }}/>

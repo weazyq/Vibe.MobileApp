@@ -37,7 +37,7 @@ function Help() {
   
   return (
     <View style={[containerStyles.fullHeight, containerStyles.fullWidth, containerStyles.flexColumn,  
-    { paddingHorizontal: 20, paddingBottom: 20, paddingTop: 20 }]}>
+    { paddingHorizontal: 20, paddingBottom: 20, paddingTop: 50 }]}>
         <View>
           <Typography text="Полезные ссылки:" variant="h3" sx={{fontWeight: 'bold', marginBottom: 10}}/>
 

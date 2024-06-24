@@ -30,6 +30,10 @@ function Profile() {
         logout()
     }
 
+    function handleRefresh(){
+        getRentHistory()
+    }
+
     function renderRent(rent: Rent, index: number){
         const rentDuration = intervalToDuration({
             start: new Date(rent.startedAt),
@@ -49,7 +53,7 @@ function Profile() {
                 <Text style={textStyles.secondaryText}>{new Date(rent.startedAt).toLocaleString()}</Text>
             </View>
             <Property label="Самокат:" value={rent.scooterId}/>
-            <Property label="Длительность:" value={`${rentDuration.minutes} м. ${rentDuration.seconds} сек.`}/>
+            <Property label="Длительность:" value={`${rentDuration.minutes ?? 0} м. ${rentDuration.seconds ?? 0} сек.`}/>
             <Property label="Цена:" value={`${rent.price} р.`}/>
         </View>
     }
@@ -82,12 +86,15 @@ function Profile() {
             </View>
 
             <View style={{marginTop: 50}}>
-                <Typography
-                    variant="h3"
-                    text="История поездок"
-                    sx={{fontWeight: 'bold'}}
-                    gutterBottom                    
-                    />
+                <View style={containerStyles.spaceBetween}>
+                    <Typography
+                        variant="h3"
+                        text="История поездок"
+                        sx={{fontWeight: 'bold'}}
+                        gutterBottom                    
+                        />
+                    <Icon name="refresh" color={'black'} size={32} onPress={handleRefresh}/>
+                </View>
                 <Divider sx={{marginBottom: 10}}/>
                 {rents.map((r, index) => renderRent(r, index))}
             </View>
